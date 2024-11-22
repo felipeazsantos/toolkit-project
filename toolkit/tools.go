@@ -35,7 +35,7 @@ type UploadedFile struct {
 	FileSize         int64
 }
 
-func (t *Tools) uploadFiles(r *http.Request, uploadDir string, rename ...bool) ([]*UploadedFile, error) {
+func (t *Tools) UploadFiles(r *http.Request, uploadDir string, rename ...bool) ([]*UploadedFile, error) {
 	renameFile := true
 	if len(rename) > 0 {
 		renameFile = rename[0]
@@ -49,7 +49,7 @@ func (t *Tools) uploadFiles(r *http.Request, uploadDir string, rename ...bool) (
 
 	err := r.ParseMultipartForm(t.MaxFileSize)
 	if err != nil {
-		return nil, errors.New("The uploaded file is too big")
+		return nil, errors.New("the uploaded file is too big")
 	}
 
 	for _, fHeaders := range r.MultipartForm.File {
@@ -89,6 +89,8 @@ func (t *Tools) uploadFiles(r *http.Request, uploadDir string, rename ...bool) (
 				if err != nil {
 					return nil, err
 				}
+
+				uploadedFile.OriginalFileName = hdr.Filename
 
 				if renameFile {
 					uploadedFile.NewFileName = fmt.Sprintf("%s%s", t.RandomString(25), filepath.Ext(hdr.Filename))
