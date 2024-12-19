@@ -231,7 +231,7 @@ func TestTools_DownloadStaticFile(t *testing.T) {
 		t.Error("wrong content length of", res.Header["Content-Length"][0])
 	}
 
-	if res.Header["Content-Disposition"][0] != "attachment; filename\"puppy.jpg\"" {
+	if res.Header["Content-Disposition"][0] != "attachment; filename=\"puppy.jpg\"" {
 		t.Error("wrong content disposition")
 	}
 
